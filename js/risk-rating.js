@@ -1,4 +1,13 @@
 
+// get parameter
+var settings = window.location.hash
+if (settings && (settings.length == 17)) {
+  elts = $("select");
+  for (var j = 0; j < elts.length; j++) {
+    elts[j].value = settings.substr(j+1,1);
+  }
+}
+
 function getTotalLMH(score) {
   var v = {
     "LOWLOW" : "NOTE",
@@ -34,6 +43,15 @@ function registerTotalListener() {
     var lmh = getTotalLMH(v);
     $("#c").text(lmh);
     $("#c").attr("class", "is-"+lmh);
+    
+    v = "";
+    elts = $("select");
+    for (var j = 0; j < elts.length; j++) {
+      v += elts[j].value;
+    }
+    v = "#"+v
+    $("#link").attr("href", v);
+    window.location = v;
   })
 }
 registerTotalListener();
@@ -88,4 +106,10 @@ for (var i=0; i < level2.length; i++) {
   $("."+level2[i]).trigger("change");
 }
 
-
+// ------------- Google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-83851302-1', 'auto');
+ga('send', 'pageview');
