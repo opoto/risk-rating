@@ -1,0 +1,362 @@
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="x-ua-compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no" />
+  <META name="keywords" content="Risk rating, OWASP, Threat, security">
+  <title>Risk Rating</title>
+
+  <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/risk-rating.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+  <h1>Risk Engine tool</h1>
+  <p>Compute risk likehood based on <a href="https://www.owasp.org/index.php/OWASP_Risk_Rating_Methodology" target="_blank">OWASP methodology</a>
+  
+  <table>
+    <tr class="level1">
+      <th>Likehood</th>
+      <th><span id="c1-lmh" class="c-lmh"></span> (<span id="c1" class="c"></span>)</th>
+    </tr>
+    <tr class="level2">
+      <th title="likelihood of a successful attack by this group of threat agents. Use the worst-case threat agent.">
+        Threat agent factors
+      </th>
+      <th><span id="c1-1-lmh" class="c1-lmh"></span> (<span id="c1-1" class="c1"></span>)</th>
+    </tr>
+    <tr>
+      <td title="How technically skilled is this group of threat agents?">
+        Skill Level
+      </td>
+      <td>
+        <select class="c1-1">
+          <option value="0">0. </option>
+          <option value="1">1. No technical skills</option>
+          <option value="2">2. </option>
+          <option value="3">3. Some technical skills</option>
+          <option value="4">4. </option>
+          <option value="5">5. Advanced computer user</option>
+          <option value="6">6. Network and programming skills</option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. Security penetration skills</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How motivated is this group of threat agents to find and exploit this vulnerability?">
+        Motive
+      </td>
+      <td>
+        <select class="c1-1">
+          <option value="0">0. </option>
+          <option value="1">1. Low or no reward</option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. Possible reward</option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. High reward</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="What resources and opportunities are required for this group of threat agents to find and exploit this vulnerability? ">
+        Opportunity
+      </td>
+      <td>
+        <select class="c1-1">
+          <option value="0">0. Full access or expensive resources required</option>
+          <option value="1">1. </option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. Special access or resources required </option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. Some access or resources required</option>
+          <option value="8">8. </option>
+          <option value="9">9. No access or resources required</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="What resources and opportunities are required for this group of threat agents to find and exploit this vulnerability? ">
+        Size
+      </td>
+      <td>
+        <select class="c1-1">
+          <option value="0">0. </option>
+          <option value="1">1. </option>
+          <option value="2">2. Developers, system administrators</option>
+          <option value="3">3. </option>
+          <option value="4">4. Intranet users</option>
+          <option value="5">5. Partners</option>
+          <option value="6">6. Authenticated users</option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. Anonymous Internet users</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="level2">
+      <th title="Likelihood of the particular vulnerability involved being discovered and exploited. Assume the threat agent selected above.">
+        Vulnerability factors
+      </th>
+      <th><span id="c1-2-lmh" class="c1-lmh"></span> (<span id="c1-2" class="c1"></span>)</th>
+    </tr>
+    <tr>
+      <td title="How easy is it for this group of threat agents to discover this vulnerability?">
+        Ease of discovery
+      </td>
+      <td>
+        <select class="c1-2">
+          <option value="0">0. </option>
+          <option value="1">1. Practically impossible</option>
+          <option value="2">2. option>
+          <option value="3">3. Difficult</option>
+          <option value="4">4. </option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. Easy </option>
+          <option value="8">8. </option>
+          <option value="9">9. Automated tools available</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How easy is it for this group of threat agents to actually exploit this vulnerability?">
+        Ease of exploit
+      </td>
+      <td>
+        <select class="c1-2">
+          <option value="0">0. </option>
+          <option value="1">1. Theoretical</option>
+          <option value="2">2. </option>
+          <option value="3">3. Difficult</option>
+          <option value="4">4. </option>
+          <option value="5">5. Easy</option>
+          <option value="6">6. </option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. Automated tools available </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How well known is this vulnerability to this group of threat agents?">
+        Awareness
+      </td>
+      <td>
+        <select class="c1-2">
+          <option value="0">0. </option>
+          <option value="1">1. Unknown</option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. Hidden</option>
+          <option value="5">5. </option>
+          <option value="6">6. Obvious</option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. Public knowledge</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How likely is an exploit to be detected?">
+        Intrusion detection
+      </td>
+      <td>
+        <select class="c1-2">
+          <option value="0">0. </option>
+          <option value="1">1. Active detection in application</option>
+          <option value="2">2. </option>
+          <option value="3">3. Logged and reviewed</option>
+          <option value="4">4. </option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. </option>
+          <option value="8">8. Logged without review</option>
+          <option value="9">9. Not logged</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="level1">
+      <th>Impact</th>
+      <th><span id="c2-lmh" class="c-lmh"></span> (<span id="c2" class="c"></span>)</th>
+    </tr>
+    <tr class="level2">
+      <th title="">
+        Technical Impact
+      </th>
+      <th><span id="c2-1-lmh" class="c1-lmh"></span> (<span id="c2-1" class="c2"></span>)</th>
+    </tr>
+    <tr>
+      <td title="How much data could be disclosed and how sensitive is it?">
+        Loss of confidentiality
+      </td>
+      <td>
+        <select class="c2-1">
+          <option value="0">0. </option>
+          <option value="1">1. </option>
+          <option value="2">2. Minimal non-sensitive data disclosed</option>
+          <option value="3">3. </option>
+          <option value="4">4. Minimal critical data disclosed, extensive non-sensitive data disclosed</option>
+          <option value="5">5. Extensive critical data disclosed</option>
+          <option value="6">6. </option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. All data disclosed</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How much data could be corrupted and how damaged is it?">
+        Loss of integrity
+      </td>
+      <td>
+        <select class="c2-1">
+          <option value="0">0. </option>
+          <option value="1">1. Minimal slightly corrupt data</option>
+          <option value="2">2. </option>
+          <option value="3">3.  Minimal seriously corrupt data</option>
+          <option value="4">4. </option>
+          <option value="5">5. Extensive slightly corrupt data</option>
+          <option value="6">6. </option>
+          <option value="7">7. Extensive seriously corrupt data</option>
+          <option value="8">8. </option>
+          <option value="9">9. All data totally corrupt</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How much service could be lost and how vital is it? ">
+        Loss of availability
+      </td>
+      <td>
+        <select class="c2-1">
+          <option value="0">0. </option>
+          <option value="1">1. Minimal secondary services interrupted</option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. </option>
+          <option value="5">5. Minimal primary services interrupted, extensive secondary services interrupted</option>
+          <option value="6">6. </option>
+          <option value="7">7. Extensive primary services interrupted</option>
+          <option value="8">8. </option>
+          <option value="9">9. All services completely lost</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="Are the threat agents' actions traceable to an individual?">
+        Loss of accountability
+      </td>
+      <td>
+        <select class="c2-1">
+          <option value="0">0. </option>
+          <option value="1">1. Fully traceable</option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. </option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. Possibly traceable</option>
+          <option value="8">8. </option>
+          <option value="9">9. Completely anonymous</option>
+        </select>
+      </td>
+    </tr>
+    <tr class="level2">
+      <th title="">
+        Business Impact
+      </th>
+      <th><span id="c2-2-lmh" class="c1-lmh"></span> (<span id="c2-2" class="c2"></span>)</th>
+    </tr>
+    <tr>
+      <td title="How much financial damage will result from an exploit?">
+        Financial damage
+      </td>
+      <td>
+        <select class="c2-2">
+          <option value="0">0. </option>
+          <option value="1"Less than the cost to fix the vulnerability></option>
+          <option value="2">2. </option>
+          <option value="3">3. Minor effect on annual profit</option>
+          <option value="4">4. </option>
+          <option value="5">5. </option>
+          <option value="6">6. </option>
+          <option value="7">7. Significant effect on annual profit</option>
+          <option value="8">8. </option>
+          <option value="9">9. Bankruptcy</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="Would an exploit result in reputation damage that would harm the business?">
+        Reputation damage
+      </td>
+      <td>
+        <select class="c2-2">
+          <option value="0">0. </option>
+          <option value="1">1. Minimal damage</option>
+          <option value="2">2. </option>
+          <option value="3">3. </option>
+          <option value="4">4. Loss of major accounts</option>
+          <option value="5">5. Loss of goodwill</option>
+          <option value="6">6. </option>
+          <option value="7">7. </option>
+          <option value="8">8. </option>
+          <option value="9">9. Brand damage</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How much exposure does non-compliance introduce?">
+        Non-compliance
+      </td>
+      <td>
+        <select class="c2-2">
+          <option value="0">0. </option>
+          <option value="1">1. </option>
+          <option value="2">2. Minor violation</option>
+          <option value="3">3. </option>
+          <option value="4">4. </option>
+          <option value="5">5. Clear violation</option>
+          <option value="6">6. </option>
+          <option value="7">7. High profile violation</option>
+          <option value="8">8. </option>
+          <option value="9">9. </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td title="How much personally identifiable information could be disclosed?">
+        Privacy violation
+      </td>
+      <td>
+        <select class="c2-2">
+          <option value="0">0. </option>
+          <option value="1">1. </option>
+          <option value="2">2. </option>
+          <option value="3">3. One individual</option>
+          <option value="4">4. </option>
+          <option value="5">5. Hundreds of people</option>
+          <option value="6">6. </option>
+          <option value="7">7. Thousands of people</option>
+          <option value="8">8. </option>
+          <option value="9">9. Millions of people</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <div>
+    <h2>Total score: <span id="c"></span></h2>
+    <!--div><a href="#" id="link">URL link to this result</a></div-->
+  </div>
+  <script src="js/risk-rating.js"></script>
+</body>
+</html>

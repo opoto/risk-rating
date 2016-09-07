@@ -1,0 +1,37 @@
+
+
+.level1 {
+  background-color: #BBB;
+}
+.level2 {
+  background-color: #DDD;
+}
+
+.level1 th:first-child, .level2 th:first-child{
+  text-align:left;
+}
+.level1 th:last-child , .level2 th:last-child {
+  text-align:left;
+}
+
+
+.is-NOTE {
+  background-color: green;
+}
+.is-LOW {
+  background-color: yellow;
+}
+.is-MEDIUM {
+  background-color: orange;
+}
+.is-HIGH {
+  background-color: red;
+}
+.is-CRITICAL {
+  background-color: red;
+  font-weight: bold;
+  animation: blinker 1s linear infinite;
+}
+@keyframes blinker {  
+  50% { opacity: 0.0; }
+}
