@@ -1,7 +1,6 @@
-
-
 .level1 {
   background-color: #BBB;
+  font-size: 120%; 
 }
 .level2 {
   background-color: #DDD;
@@ -12,6 +11,11 @@
 }
 .level1 th:last-child , .level2 th:last-child {
   text-align:left;
+}
+
+.level2 th {
+  text-align:left;
+  padding-left: 20px;
 }
 
 
