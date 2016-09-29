@@ -1,5 +1,4 @@
 # risk-rating
 
-Risk rating web app based on OWASP methodology
+Risk rating web app based on [OWASP Risk Rating Methodology](https://www.owasp.org/index.php/OWASP_Risk_Rating_Methodology)
 
-Use it here: https://opoto.github.io/risk-rating
